@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 08: Mouse LERP Practice (Red Theme)</title>
+    <style>
+        :root {
+            /* Changed primary color to a vibrant red */
+            --primary: #ef4444; 
+            --dark: #1e293b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fff1f2; /* Light rose background */
+            color: #1e293b;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h2 { 
+            margin-bottom: 20px; 
+            color: #991b1b; /* Dark red header */
+        }
+
+        #canvas-container {
+            position: relative;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        canvas {
+            background: white;
+            border: 2px solid #fecaca; /* Soft pink border */
+            display: block;
+        }
+
+        .hint {
+            margin-top: 15px;
+            color: #9f1239;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Smooth Motion: LERP Practice</h2>
+    
+    <div id="canvas-container">
+        <canvas id="lerpCanvas" width="800" height="500"></canvas>
+    </div>
+
+    <p class="hint">The red circle follows your cursor within the dashed area.</p>
+
+    <script>
+        const canvas = document.getElementById("lerpCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const BOX = {
+            x: 100,
+            y: 50,
+            width: 600,
+            height: 400
+        };
+
+        let mouseX = 400;
+        let mouseY = 250;
+        let circleX = 400;
+        let circleY = 250;
+        
+        // Changed speed from 0.05 to 0.08 (makes it slightly snappier)
+        const lerpFactor = 0.08; 
+
+        canvas.addEventListener("mousemove", (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            if (mx >= BOX.x && mx <= BOX.x + BOX.width &&
+                my >= BOX.y && my <= BOX.y + BOX.height) {
+                mouseX = mx;
+                mouseY = my;
+            }
+        });
+
+        function lerp(start, end, t) {
+            return start + (end - start) * t;
+        }
+
+        function animate() {
+            circleX = lerp(circleX, mouseX, lerpFactor);
+            circleY = lerp(circleY, mouseY, lerpFactor);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the Bounding Box
+            ctx.strokeStyle = "#fca5a5"; 
+            ctx.setLineDash([10, 5]); // Different dash pattern
+            ctx.strokeRect(BOX.x, BOX.y, BOX.width, BOX.height);
+            ctx.setLineDash([]);
+
+            // Draw the Follower Circle
+            ctx.beginPath();
+            // Increased radius from 20 to 25
+            ctx.arc(circleX, circleY, 25, 0, Math.PI * 2); 
+            ctx.fillStyle = "#ef4444"; // Red fill
+            ctx.fill();
+            ctx.strokeStyle = "#991b1b"; // Darker red border
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
