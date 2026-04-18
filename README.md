@@ -1,3 +1,7 @@
+
+VERCEL LINK:
+https://hci-lerp.vercel.app
+
 ...Interactive Mouse LERP Demo:
 
 A simple and lightweight demonstration of Linear Interpolation (LERP) that creates smooth mouse-following animation on an HTML5 canvas.
@@ -14,3 +18,5 @@ Open the index.html file in your browser to run the demo.
 -Move your mouse inside the dashed box.
 -Observe the circle smoothly moving toward the cursor.
 -When the cursor leaves the box, the circle stays at its last valid position.
+
+VERCEL LINK:
